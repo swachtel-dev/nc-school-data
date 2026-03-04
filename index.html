@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NC Charter K-1 Enrollment Briefing</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500;600&family=Libre+Franklin:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f4f1ec;--surface:#fff;--surface2:#f0ede6;--border:#d6d0c4;
+  --text:#3d3830;--text-dim:#7a7265;--text-bright:#1a1610;
+  --blue:#2b6cb0;--blue-dim:#2b6cb015;--blue-bright:#1a4e8a;
+  --gold:#b8860b;--gold-dim:#b8860b12;--gold-bright:#8b6508;
+  --green:#2d7a4f;--red:#c0392b;--purple:#6b4fa0;
+  --font-display:'Fraunces',Georgia,serif;
+  --font-body:'Libre Franklin',system-ui,sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+}
+html{font-size:16px;scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.65;-webkit-font-smoothing:antialiased}
+
+.page{max-width:860px;margin:0 auto;padding:0 32px}
+
+/* ── HERO ── */
+.hero{padding:72px 0 56px;border-bottom:1px solid var(--border)}
+.hero-label{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);margin-bottom:14px;font-weight:500}
+.hero h1{font-family:var(--font-display);font-size:clamp(1.8rem,4.5vw,2.8rem);color:var(--text-bright);line-height:1.2;margin-bottom:14px;font-weight:600}
+.hero-sub{font-size:1rem;color:var(--text-dim);max-width:560px;font-weight:300;line-height:1.6}
+.hero-meta{display:flex;gap:20px;margin-top:20px;font-family:var(--font-mono);font-size:.66rem;color:var(--text-dim)}
+.hero-meta span{display:flex;align-items:center;gap:6px}
+.hero-meta .dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+
+/* ── SECTIONS ── */
+.sec{padding:52px 0;border-bottom:1px solid var(--border)}
+.sec:last-of-type{border-bottom:none}
+.sec-num{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--blue);margin-bottom:6px;font-weight:600}
+.sec-title{font-family:var(--font-display);font-size:1.6rem;color:var(--text-bright);margin-bottom:6px;font-weight:600;line-height:1.3}
+.sec-desc{color:var(--text-dim);margin-bottom:28px;font-size:.88rem;max-width:580px;font-weight:300}
+
+/* ── STAT CARDS ── */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin:20px 0}
+.st{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px}
+.st-label{font-family:var(--font-mono);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);margin-bottom:5px;font-weight:500}
+.st-val{font-family:var(--font-display);font-size:1.7rem;color:var(--text-bright);font-weight:700}
+.st-sub{font-size:.72rem;color:var(--text-dim);margin-top:2px}
+.st.blue{border-color:var(--blue);background:var(--blue-dim)}.st.blue .st-val{color:var(--blue-bright)}
+.st.gold{border-color:var(--gold);background:var(--gold-dim)}.st.gold .st-val{color:var(--gold-bright)}
+
+/* ── CALLOUT ── */
+.note{background:var(--blue-dim);border-left:3px solid var(--blue);padding:13px 16px;margin:20px 0;border-radius:0 5px 5px 0;font-size:.84rem;line-height:1.6}
+.note.gold{background:var(--gold-dim);border-left-color:var(--gold)}
+.note b{color:var(--text-bright);font-weight:600}
+
+/* ── TABLES ── */
+.tbl{width:100%;border-collapse:collapse;font-size:.78rem;margin:16px 0}
+.tbl th{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);text-align:left;padding:7px 8px;border-bottom:2px solid var(--border);font-weight:500}
+.tbl td{padding:7px 8px;border-bottom:1px solid var(--border)}
+.tbl tr:hover td{background:var(--surface2)}
+.tbl .nm{color:var(--text-bright);font-weight:500}
+.tbl .mono{font-family:var(--font-mono);font-size:.72rem}
+.tag{display:inline-block;padding:1px 6px;border-radius:3px;font-family:var(--font-mono);font-size:.58rem;font-weight:500}
+.t-two{background:rgba(92,184,122,.15);color:var(--green)}
+.t-one{background:rgba(155,126,216,.15);color:var(--purple)}
+
+/* ── CHART PANELS ── */
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:24px 28px;margin:22px 0}
+.chart-box{position:relative;width:100%;height:320px}
+.panel-title{font-family:var(--font-mono);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);margin-bottom:4px;font-weight:500}
+.panel-sub{font-size:.76rem;color:var(--text-dim);margin-bottom:16px}
+
+/* ── CUSTOM SVG CHARTS ── */
+.svg-chart{display:block;width:100%;overflow:visible}
+.svg-chart text{font-family:'JetBrains Mono',monospace}
+
+/* ── BEESWARM ── */
+.bees{position:relative;padding:12px 0 28px}
+.bee-row{display:flex;align-items:center;gap:10px;margin:7px 0;font-size:.76rem}
+.bee-row .bee-name{width:180px;text-align:right;color:var(--text-dim);font-size:.72rem;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bee-row .bee-track{flex:1;position:relative;height:22px}
+.bee-row .bee-dot{position:absolute;width:16px;height:16px;border-radius:50%;top:50%;transform:translate(-50%,-50%);border:2px solid var(--gold);background:var(--gold-dim);transition:transform .2s}
+.bee-row .bee-dot:hover{transform:translate(-50%,-50%) scale(1.3);background:var(--gold);z-index:2}
+.bee-row .bee-val{position:absolute;top:50%;transform:translate(-50%,-50%);font-family:var(--font-mono);font-size:.58rem;color:var(--gold-bright);pointer-events:none;left:calc(50%);white-space:nowrap}
+.bee-axis{position:relative;height:1px;background:var(--border);margin:4px 0 0 190px}
+.bee-ticks{display:flex;justify-content:space-between;margin:4px 0 0 190px;font-family:var(--font-mono);font-size:.56rem;color:var(--text-dim)}
+
+/* ── SPAGHETTI CHART ── */
+.spaghetti-legend{display:flex;gap:16px;margin:8px 0;font-family:var(--font-mono);font-size:.66rem;color:var(--text-dim)}
+.spaghetti-legend span{display:flex;align-items:center;gap:5px}
+.spaghetti-legend .swatch{width:24px;height:3px;border-radius:2px}
+
+/* ── SPARKLINE TABLE ── */
+.spark-tbl{width:100%;border-collapse:collapse;font-size:.76rem;margin:16px 0}
+.spark-tbl th{font-family:var(--font-mono);font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);text-align:left;padding:8px 6px;border-bottom:2px solid var(--border);font-weight:500}
+.spark-tbl td{padding:6px;border-bottom:1px solid var(--border);vertical-align:middle}
+.spark-tbl tr:hover td{background:var(--surface2)}
+.spark-tbl .snm{color:var(--text-bright);font-weight:500;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.spark-tbl .snum{font-family:var(--font-mono);text-align:right;font-size:.72rem;color:var(--text-dim)}
+.spark-tbl svg{display:block}
+
+/* ── STRIP PLOT (scenario) ── */
+.strip-wrap{margin:24px 0}
+.strip-chart{position:relative;height:120px;margin:0 0 4px}
+.strip-chart .tick{position:absolute;bottom:40px;width:2px;height:16px;background:var(--blue);opacity:.4;border-radius:1px}
+.strip-chart .marker{position:absolute;bottom:0;transform:translateX(-50%)}
+.strip-chart .marker-line{width:3px;height:50px;border-radius:2px}
+.strip-chart .marker-dot{width:14px;height:14px;border-radius:50%;margin:-3px 0 0 -5.5px;border:2px solid var(--surface)}
+.strip-chart .marker-label{position:absolute;bottom:50px;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:.64rem;white-space:nowrap;text-align:center;line-height:1.3}
+.strip-chart .marker-pct{font-weight:600}
+.strip-scale{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:.56rem;color:var(--text-dim)}
+
+/* ── FOOTER ── */
+footer{padding:36px 0;text-align:center;font-size:.68rem;color:var(--text-dim);font-family:var(--font-mono);line-height:1.6}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.anim{animation:fadeIn .45s ease-out both}
+.a1{animation-delay:.04s}.a2{animation-delay:.08s}.a3{animation-delay:.12s}.a4{animation-delay:.16s}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+<header class="hero anim">
+  <div class="hero-label">Enrollment Briefing</div>
+  <h1>What Does a K-1 Class Actually Look Like in NC?</h1>
+  <div class="hero-sub">Distribution analysis for a bilingual charter launch in Greensboro. School-level enrollment data across 182 NC charters and 69 Guilford County public elementaries.</div>
+  <div class="hero-meta">
+    <span><span class="dot" style="background:var(--blue)"></span>NC DPI + NCES CCD 2022-23</span>
+    <span><span class="dot" style="background:var(--gold)"></span>Guilford County Focus</span>
+  </div>
+</header>
+
+<!-- ═══════ 01: BILINGUAL LANDSCAPE ═══════ -->
+<div class="sec">
+  <div class="sec-num anim">01</div>
+  <h2 class="sec-title anim a1">The Bilingual Landscape</h2>
+  <p class="sec-desc anim a2">NC has 318 dual-language programs but charter schools barely participate. Your competition is traditional public school DL/I strands, not other charters.</p>
+
+  <div class="stats anim a3">
+    <div class="st"><div class="st-label">DL/I in NC</div><div class="st-val">318</div><div class="st-sub">8 languages</div></div>
+    <div class="st blue"><div class="st-label">Charter DL/I</div><div class="st-val">9</div><div class="st-sub">of 223 charters</div></div>
+    <div class="st gold"><div class="st-label">Guilford DL/I</div><div class="st-val">7</div><div class="st-sub">all trad. public</div></div>
+    <div class="st"><div class="st-label">Spanish</div><div class="st-val">275</div><div class="st-sub">86% of all DL/I</div></div>
+  </div>
+
+  <div class="note anim a4"><b>Zero bilingual charters in the Triad.</b> The 7 Guilford DL/I programs are all strands within GCS schools. Closest bilingual charters: Honor Prep (Charlotte, opening 2025) and Casa Esperanza (Wake County, since 2003).</div>
+
+  <div style="font-family:var(--font-mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);margin:24px 0 8px;font-weight:500">NC Charter DL/I Programs</div>
+  <table class="tbl"><thead><tr><th>School</th><th>County</th><th>Language</th><th>Model</th><th>Year</th></tr></thead><tbody id="t-dli"></tbody></table>
+
+  <div style="font-family:var(--font-mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);margin:24px 0 8px;font-weight:500">Guilford County DL/I (Direct Competition)</div>
+  <table class="tbl"><thead><tr><th>School</th><th>Language</th><th>Type</th><th>Year</th></tr></thead><tbody id="t-gdli"></tbody></table>
+</div>
+
+<!-- ═══════ 02: K DISTRIBUTION ═══════ -->
+<div class="sec">
+  <div class="sec-num anim">02</div>
+  <h2 class="sec-title anim a1">Kindergarten: The Shape of the Market</h2>
+  <p class="sec-desc anim a2">How big is a typical charter K class? The distribution is wide and right-skewed, with real mass in both the 20-50 range (small launches) and the 70-110 range (established schools).</p>
+
+  <div class="panel anim a3">
+    <div class="panel-title">K Enrollment per School &mdash; NC Charters vs Guilford Public</div>
+    <div class="panel-sub">Each bar = % of schools in that enrollment band. Normalized so different sample sizes are comparable.</div>
+    <canvas id="ch-k"></canvas>
+  </div>
+
+  <div class="stats anim">
+    <div class="st"><div class="st-label">NC Charter Median</div><div class="st-val">72</div><div class="st-sub">P25=40 &middot; P75=95</div></div>
+    <div class="st"><div class="st-label">Guilford Public</div><div class="st-val">70</div><div class="st-sub">n=69 schools</div></div>
+    <div class="st gold"><div class="st-label">Guilford Charter</div><div class="st-val">86</div><div class="st-sub">n=12 &mdash; see below</div></div>
+    <div class="st"><div class="st-label">Std Deviation</div><div class="st-val">36</div><div class="st-sub">very high variance</div></div>
+  </div>
+
+  <div class="panel anim">
+    <div class="panel-title">Every Guilford Charter K Class (n=12)</div>
+    <div class="panel-sub">Each row is one school. Dot position = K enrollment. Too few for a histogram.</div>
+    <div class="bees" id="bees-k"></div>
+  </div>
+
+  <div class="note anim"><b>Guilford charters run bigger K classes than NC average</b> (median 86 vs 72). Most cluster 70-99, with one outlier at 28 (Guilford Prep, small/growing) and one at 139 (Phoenix Academy, multi-campus).</div>
+</div>
+
+<!-- ═══════ 03: GRADE 1 ═══════ -->
+<div class="sec">
+  <div class="sec-num anim">03</div>
+  <h2 class="sec-title anim a1">First Grade: Nearly Identical Shape</h2>
+  <p class="sec-desc anim a2">If you're launching K-1 simultaneously, expect similar demand for both grades. The distributions are nearly interchangeable.</p>
+
+  <div class="panel anim a3">
+    <div class="panel-title">1st Grade Enrollment per School &mdash; NC Charters vs Guilford Public</div>
+    <div class="panel-sub">Same chart format as above. Notice the near-identical shape.</div>
+    <canvas id="ch-g1"></canvas>
+  </div>
+
+  <div class="stats anim">
+    <div class="st"><div class="st-label">NC Charter Median</div><div class="st-val">73</div><div class="st-sub">P25=40 &middot; P75=98</div></div>
+    <div class="st"><div class="st-label">Guilford Public</div><div class="st-val">73</div><div class="st-sub">n=69</div></div>
+    <div class="st gold"><div class="st-label">Guilford Charter</div><div class="st-val">85</div><div class="st-sub">n=12</div></div>
+    <div class="st"><div class="st-label">K &rarr; 1st shift</div><div class="st-val">+1</div><div class="st-sub">essentially flat</div></div>
+  </div>
+
+  <div class="note anim"><b>Plan the same number of sections for K and 1st.</b> You're not fighting a different demand curve.</div>
+</div>
+
+<!-- ═══════ 04: NEW SCHOOL TRAJECTORIES ═══════ -->
+<div class="sec">
+  <div class="sec-num anim">04</div>
+  <h2 class="sec-title anim a1">New School Trajectories</h2>
+  <p class="sec-desc anim a2">43 NC charters opened K enrollment since 2018. Each gray line is one school's K-class trajectory. <span style="color:var(--gold-bright)">Guilford schools are highlighted gold.</span></p>
+
+  <div class="panel anim a3">
+    <div class="panel-title">K Enrollment Over Time &mdash; All New Charters (2018-2022)</div>
+    <div class="spaghetti-legend">
+      <span><span class="swatch" style="background:var(--border)"></span>Other NC charters (n=39)</span>
+      <span><span class="swatch" style="background:var(--gold)"></span>Guilford charters (n=4)</span>
+    </div>
+    <canvas id="ch-traj"></canvas>
+  </div>
+
+  <div class="note gold anim"><b>Strong launches hit 60-150 in year 1 and hold.</b> The weakest open under 40 and never recover. Your year-1 K target should be <b>60-90</b> to land in the &ldquo;strong start&rdquo; cluster. The 2020 COVID dip is visible but recoverable.</div>
+</div>
+
+<!-- ═══════ 05: GUILFORD DETAIL ═══════ -->
+<div class="sec">
+  <div class="sec-num anim">05</div>
+  <h2 class="sec-title anim a1">Guilford Charters: 8-Year History</h2>
+  <p class="sec-desc anim a2">13 charters operate in Guilford County. Here's how their K classes have evolved. The sparklines show the trend at a glance.</p>
+
+  <table class="spark-tbl anim a3">
+    <thead><tr><th>School</th><th style="text-align:right">Latest K</th><th style="width:140px">K Trend (2015-22)</th><th style="text-align:right">Latest G1</th><th style="width:140px">G1 Trend</th></tr></thead>
+    <tbody id="t-detail"></tbody>
+  </table>
+
+  <div class="note anim"><b>Established Guilford charters are remarkably stable.</b> Cornerstone holds 99 like clockwork. Greensboro Academy holds 84. Phoenix is the outlier at ~139 (multi-campus). Newer schools (Revolution, Summit Creek) show more year-to-year volatility but converge into 70-90.</div>
+</div>
+
+<!-- ═══════ 06: WHERE YOU'D LAND ═══════ -->
+<div class="sec">
+  <div class="sec-num anim">06</div>
+  <h2 class="sec-title anim a1">Where Would You Land?</h2>
+  <p class="sec-desc anim a2">Each tiny mark below is one of the 182 NC charter schools. The colored markers show your three planning scenarios.</p>
+
+  <div class="panel anim a3">
+    <div class="panel-title">Your Scenarios vs Every NC Charter K Class</div>
+    <div class="strip-wrap">
+      <div class="strip-chart" id="strip"></div>
+      <div class="strip-scale" id="strip-scale"></div>
+    </div>
+  </div>
+
+  <div class="stats anim">
+    <div class="st"><div class="st-label">Conservative</div><div class="st-val" style="font-size:1.4rem">36/grade</div><div class="st-sub">2 sections &times; 18</div></div>
+    <div class="st blue"><div class="st-label">Target</div><div class="st-val" style="font-size:1.4rem">54/grade</div><div class="st-sub">3 sections &times; 18</div></div>
+    <div class="st gold"><div class="st-label">Stretch</div><div class="st-val" style="font-size:1.4rem">80/grade</div><div class="st-sub">4 sections &times; 20</div></div>
+  </div>
+
+  <div class="note anim"><b>Even the stretch scenario is barely above median.</b> 80/grade puts you at ~P58. The conservative 36/grade clears P20 — 1 in 5 NC charters runs K classes that small or smaller. <b>The bilingual niche could accelerate or limit demand</b> — pre-enrollment signals will tell.</div>
+</div>
+
+</div>
+
+<footer>
+  Data: NC DPI Statistical Profile, NCES Common Core of Data (2022-23), NC DPI DL/I Program Directory &middot; March 2026
+</footer>
+
+<script>
+// ══════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════
+const D = {"nc_charter_k_vals":[3,4,5,6,11,12,15,16,17,20,20,20,20,21,21,21,22,22,22,25,25,26,26,26,27,28,28,30,31,32,32,32,32,33,34,35,35,36,36,38,39,39,39,39,40,40,40,40,40,41,41,43,43,44,45,46,46,48,49,50,50,51,51,52,53,53,53,56,58,60,60,61,62,62,63,63,64,64,64,64,65,65,66,67,67,67,69,70,70,71,71,72,72,72,74,75,76,76,77,77,78,79,79,79,80,80,80,81,81,82,83,83,83,84,84,84,85,86,87,87,87,87,88,88,89,89,89,89,90,90,91,91,92,92,93,94,95,95,96,97,97,97,99,99,99,100,100,100,102,103,103,104,104,105,105,107,107,107,108,109,109,111,111,114,116,117,118,119,119,121,121,124,124,127,130,133,134,139,144,148,182,201],"nc_charter_g1_vals":[2,3,8,9,11,13,16,17,17,18,18,19,19,20,20,20,21,21,21,21,21,23,23,25,25,27,30,30,31,31,32,33,34,35,35,35,36,36,36,37,38,38,38,39,39,40,40,40,40,43,43,43,43,44,45,46,46,47,47,48,48,48,48,49,50,51,55,55,58,59,59,60,62,63,63,63,63,64,66,66,66,66,68,69,71,72,72,72,72,73,73,73,74,75,76,76,77,77,78,78,79,79,80,80,80,80,81,81,82,82,83,83,84,84,84,84,85,85,86,86,86,87,87,87,88,89,89,91,91,92,93,93,94,95,96,96,98,98,98,99,100,100,100,101,101,101,101,101,102,103,103,104,104,104,105,106,110,110,110,112,112,113,114,115,115,116,116,116,116,120,120,125,126,129,135,136,140,146,162,167,174,212],"guilford_pub_k_vals":[2,2,12,31,33,33,33,36,40,40,40,41,41,42,42,43,45,46,46,49,52,55,58,61,61,64,66,66,66,67,67,68,70,70,70,72,75,76,76,76,76,77,78,78,80,80,80,82,82,84,84,84,84,87,88,89,90,90,94,94,99,99,102,102,103,112,115,116,117],"guilford_charter_k_vals":[28,70,71,72,79,86,87,89,93,99,99,139],"guilford_pub_g1_vals":[9,21,26,26,30,32,32,35,38,39,40,41,43,43,46,46,47,47,47,51,51,54,56,59,63,64,64,65,66,67,68,70,71,71,73,73,75,75,76,76,77,78,79,80,80,80,81,82,82,83,85,89,92,93,96,96,96,99,99,101,101,102,105,107,110,111,114,128,130],"guilford_charter_g1_vals":[37,46,73,79,81,84,86,91,96,100,101,135],"new_charter_trajectories":[{"name":"Davidson Charter Academy","city":"Lexington","county":"37057","is_guilford":false,"years":{"2018":83,"2019":84,"2020":79,"2021":85,"2022":89}},{"name":"East Voyager Academy of Charlotte","city":"Charlotte","county":"37119","is_guilford":false,"years":{"2018":29,"2019":27,"2020":16,"2021":20,"2022":20}},{"name":"Jackson Day School","city":"Charlotte","county":"37119","is_guilford":false,"years":{"2018":47,"2019":41,"2020":59,"2021":61,"2022":81}},{"name":"Johnston Charter Academy","city":"Clayton","county":"37101","is_guilford":false,"years":{"2018":104,"2019":88,"2020":85,"2021":87,"2022":84}},{"name":"Moore Montessori Community School","city":"Southern Pines","county":"37125","is_guilford":false,"years":{"2018":45,"2019":45,"2020":43,"2021":53,"2022":51}},{"name":"Next Generation Academy","city":"Greensboro","county":"37081","is_guilford":true,"years":{"2018":72,"2019":86,"2020":41,"2021":70,"2022":71}},{"name":"Raleigh Oak Charter","city":"Raleigh","county":"37183","is_guilford":false,"years":{"2018":62,"2019":61,"2020":63,"2021":51,"2022":53}},{"name":"Rolesville Charter Academy","city":"Rolesville","county":"37183","is_guilford":false,"years":{"2018":100,"2019":88,"2020":88,"2021":90,"2022":76}},{"name":"The Experiential School of Greensboro","city":"Greensboro","county":"37081","is_guilford":true,"years":{"2018":36,"2019":33,"2020":35,"2021":35,"2022":28}},{"name":"Uwharrie Charter Academy","city":"Asheboro","county":"37151","is_guilford":false,"years":{"2018":97,"2019":87,"2020":86,"2021":92,"2022":100}},{"name":"Bonnie Cone Classical Academy","city":"Huntersville","county":"37119","is_guilford":false,"years":{"2019":62,"2020":196,"2021":102,"2022":118}},{"name":"Carolina Charter Academy","city":"Angier","county":"37183","is_guilford":false,"years":{"2019":91,"2020":87,"2021":106,"2022":102}},{"name":"Community Public Charter","city":"Stanley","county":"37071","is_guilford":false,"years":{"2019":60,"2020":101,"2021":96,"2022":94}},{"name":"Hobgood Charter School","city":"Hobgood","county":"37083","is_guilford":false,"years":{"2019":35,"2020":38,"2021":41,"2022":38}},{"name":"Monroe Charter Academy","city":"Monroe","county":"37179","is_guilford":false,"years":{"2019":33,"2020":24,"2021":23,"2022":25}},{"name":"Pocosin Innovative Charter","city":"Creswell","county":"37187","is_guilford":false,"years":{"2019":18,"2020":21,"2021":22,"2022":28}},{"name":"Ridgeview Charter School","city":"Gastonia","county":"37071","is_guilford":false,"years":{"2019":49,"2020":38,"2021":46,"2022":46}},{"name":"Southwest Charlotte STEM Academy","city":"Charlotte","county":"37119","is_guilford":false,"years":{"2019":72,"2020":76,"2021":87,"2022":95}},{"name":"Steele Creek Preparatory Academy","city":"Charlotte","county":"37119","is_guilford":false,"years":{"2019":64,"2020":76,"2021":88,"2022":69}},{"name":"Tillery Charter Academy","city":"Biscoe","county":"37123","is_guilford":false,"years":{"2019":28,"2020":24,"2021":40,"2022":31}},{"name":"West Lake Preparatory Academy","city":"Denver","county":"37109","is_guilford":false,"years":{"2019":38,"2020":42,"2021":91,"2022":63}},{"name":"Achievement Charter Academy","city":"Fuquay-Varina","county":"37085","is_guilford":false,"years":{"2020":55,"2021":34,"2022":34}},{"name":"Alamance Community School","city":"Haw River","county":"37001","is_guilford":false,"years":{"2020":138,"2021":115,"2022":99}},{"name":"Cardinal Charter Acad at Wendell Falls","city":"Wendell","county":"37183","is_guilford":false,"years":{"2020":138,"2021":82,"2022":127}},{"name":"MINA Charter School of Lee County","city":"Sanford","county":"37105","is_guilford":false,"years":{"2020":68,"2021":74,"2022":67}},{"name":"Movement School Eastland","city":"Charlotte","county":"37119","is_guilford":false,"years":{"2020":117,"2021":123,"2022":117}},{"name":"Oxford Preparatory","city":"Oxford","county":"37077","is_guilford":false,"years":{"2020":60,"2021":60,"2022":61}},{"name":"Revolution Academy","city":"Summerfield","county":"37081","is_guilford":true,"years":{"2020":79,"2021":77,"2022":79}},{"name":"Willow Oak Montessori","city":"Pittsboro","county":"37037","is_guilford":false,"years":{"2020":30,"2021":33,"2022":32}},{"name":"Wilmington School of the Arts","city":"Wilmington","county":"37129","is_guilford":false,"years":{"2020":67,"2021":48,"2022":53}},{"name":"Asheville PEAK Academy","city":"Asheville","county":"37021","is_guilford":false,"years":{"2021":46,"2022":26}},{"name":"Doral Academy of North Carolina","city":"Raleigh","county":"37183","is_guilford":false,"years":{"2021":87,"2022":87}},{"name":"Faith Academy Charter School","city":"Faith","county":"37159","is_guilford":false,"years":{"2021":79,"2022":80}},{"name":"Old Main STREAM Academy","city":"Pembroke","county":"37155","is_guilford":false,"years":{"2021":42,"2022":60}},{"name":"Summit Creek Academy","city":"Browns Summit","county":"37081","is_guilford":true,"years":{"2021":107,"2022":93}},{"name":"Telra Institute","city":"Charlotte","county":"37119","is_guilford":false,"years":{"2021":76,"2022":75}},{"name":"The Hawbridge School","city":"Saxapahaw","county":"37001","is_guilford":false,"years":{"2021":33,"2022":32}},{"name":"American Leadership Academy - Johnston","city":"Clayton","county":"37101","is_guilford":false,"years":{"2022":144}},{"name":"KIPP Durham College Preparatory","city":"Durham","county":"37063","is_guilford":false,"years":{"2022":56}},{"name":"Movement School Southwest","city":"Charlotte","county":"37119","is_guilford":false,"years":{"2022":91}},{"name":"Oak Hill Charter School","city":"Lenoir","county":"37027","is_guilford":false,"years":{"2022":40}},{"name":"The Math and Science Academy of Apex","city":"Apex","county":"37183","is_guilford":false,"years":{"2022":100}},{"name":"Wake Preparatory Academy","city":"Wake Forest","county":"37069","is_guilford":false,"years":{"2022":148}}],"guilford_charter_detail":[{"name":"College Prep & Leadership","enrollment":821,"k_years":{"2015":68,"2016":60,"2017":61,"2018":70,"2019":77,"2020":62,"2021":98,"2022":70},"g1_years":{"2015":66,"2016":59,"2017":64,"2018":71,"2019":88,"2020":84,"2021":62,"2022":91}},{"name":"Cornerstone Charter (CFA)","enrollment":1337,"k_years":{"2015":80,"2016":99,"2017":99,"2018":99,"2019":99,"2020":100,"2021":99,"2022":99},"g1_years":{"2015":81,"2016":100,"2017":100,"2018":100,"2019":100,"2020":100,"2021":99,"2022":100}},{"name":"Gate City Charter","enrollment":683,"k_years":{"2016":94,"2017":101,"2018":99,"2019":96,"2020":98,"2021":98,"2022":87},"g1_years":{"2016":62,"2017":81,"2018":86,"2019":81,"2020":88,"2021":78,"2022":79}},{"name":"Greensboro Academy","enrollment":766,"k_years":{"2015":84,"2016":83,"2017":84,"2018":84,"2019":84,"2020":80,"2021":84,"2022":89},"g1_years":{"2015":84,"2016":83,"2017":84,"2018":84,"2019":84,"2020":87,"2021":85,"2022":84}},{"name":"Guilford Prep Academy","enrollment":551,"k_years":{"2015":28,"2016":26,"2017":32,"2018":33,"2019":36,"2020":39,"2021":49,"2022":72},"g1_years":{"2015":30,"2016":22,"2017":23,"2018":34,"2019":38,"2020":39,"2021":54,"2022":46}},{"name":"Next Generation Academy","enrollment":434,"k_years":{"2018":72,"2019":86,"2020":41,"2021":70,"2022":71},"g1_years":{"2018":35,"2019":84,"2020":76,"2021":53,"2022":73}},{"name":"Phoenix Academy","enrollment":1258,"k_years":{"2015":149,"2016":139,"2017":142,"2018":109,"2019":139,"2020":126,"2021":141,"2022":139},"g1_years":{"2015":152,"2016":154,"2017":111,"2018":131,"2019":127,"2020":144,"2021":131,"2022":135}},{"name":"Piedmont Classical HS","enrollment":426,"k_years":{},"g1_years":{}},{"name":"Revolution Academy","enrollment":724,"k_years":{"2020":79,"2021":77,"2022":79},"g1_years":{"2020":52,"2021":80,"2022":81}},{"name":"Summerfield Charter","enrollment":777,"k_years":{"2015":93,"2016":99,"2017":88,"2018":88,"2019":88,"2020":89,"2021":91,"2022":86},"g1_years":{"2015":85,"2016":86,"2017":87,"2018":84,"2019":91,"2020":84,"2021":83,"2022":86}},{"name":"Summit Creek Academy","enrollment":560,"k_years":{"2021":107,"2022":93},"g1_years":{"2021":74,"2022":96}},{"name":"Experiential School","enrollment":339,"k_years":{"2018":36,"2019":33,"2020":35,"2021":35,"2022":28},"g1_years":{"2018":38,"2019":42,"2020":40,"2021":38,"2022":37}},{"name":"Triad Math & Science","enrollment":1321,"k_years":{"2015":86,"2016":87,"2017":94,"2018":99,"2019":87,"2020":90,"2021":87,"2022":99},"g1_years":{"2015":96,"2016":102,"2017":96,"2018":95,"2019":93,"2020":89,"2021":94,"2022":101}}],"dli_charters":[{"name":"A.C.E. Academy","county":"Cabarrus County, NC","language":"Spanish","type":"One-Way","program":"Partial Immersion","structure":"Strand within a School","year":"2018-2019"},{"name":"Casa Esperanza Montessori (PreK-8)","county":"Wake County, NC","language":"Spanish","type":"Two-Way","program":"Full Immersion","structure":"Whole School","year":"2003-2004"},{"name":"East Voyager Academy (K-8)","county":"Mecklenburg County, NC","language":"Chinese","type":"One-Way","program":"Partial Immersion","structure":"Whole School","year":"2018-2019"},{"name":"Honor Preparatory Charter School","county":"Mecklenburg County, NC","language":"Spanish","type":"One-Way","program":"Full Immersion","structure":"Strand within a School","year":"2025-2026"},{"name":"Pine Lake Lower School (K-5)","county":"Iredell County, NC","language":"Spanish","type":"One-Way","program":"Partial Immersion","structure":"Strand within a School","year":"2015-2016"},{"name":"Pine Lake Middle School (6-8)","county":"Iredell County, NC","language":"Spanish","type":"One-Way","program":"Continuing Immersion","structure":"Strand within a School","year":"2021-2022"},{"name":"Pine Lake Upper School (9-12)","county":"Iredell County, NC","language":"Spanish","type":"One-Way","program":"Continuing Immersion","structure":"Strand within a School","year":"2024-2025"},{"name":"Roxboro Community School (RCS) Middle School","county":"Person County, NC","language":"Spanish","type":"One-Way","program":"Continuing Immersion","structure":"Strand within a School","year":"2023-2024"},{"name":"Socrates Academy Charter School (K-8)","county":"Mecklenburg County, NC","language":"Greek","type":"One-Way","program":"Partial Immersion","structure":"Strand within a School","year":"2005-2006"}],"dli_guilford":[{"name":"Jones Elementary (PreK-5)","district":"Guilford County Schools","language":"Spanish","type":"One-Way","year":"1990-1991"},{"name":"Grimsley High School (9-12)","district":"Guilford County Schools","language":"Spanish","type":"One-Way","year":"1999-2000"},{"name":"Swann Middle School (6-8)","district":"Guilford County Schools","language":"Spanish","type":"One-Way","year":"2002-2003"},{"name":"Kirkman Park Elementary (PreK-5)","district":"Guilford County Schools","language":"Spanish","type":"One-Way","year":"2007-2008"},{"name":"Allen Jay Elementary School (PreK-5)","district":"Guilford County Schools","language":"Spanish","type":"Two-Way","year":"2018-2019"},{"name":"Hunter Elementary School (PreK-5)","district":"Guilford County Schools","language":"Spanish","type":"Two-Way","year":"2018-2019"},{"name":"Allen Jay Elementary School (PreK-5)","district":"Guilford County Schools","language":"Urdu","type":"Two-Way","year":"2018-2019"}]};
+
+// ══════════════════════════════════════════
+// CHART DEFAULTS
+// ══════════════════════════════════════════
+Chart.defaults.color = '#7a7265';
+Chart.defaults.borderColor = '#d6d0c4';
+Chart.defaults.font.family = "'JetBrains Mono', monospace";
+Chart.defaults.font.size = 10;
+
+const tooltipStyle = {
+  backgroundColor:'#1a1610', titleColor:'#f4f1ec', bodyColor:'#d6d0c4',
+  borderColor:'#3d3830', borderWidth:1, padding:10, cornerRadius:4,
+  titleFont:{size:11}, bodyFont:{size:10}
+};
+
+// ══════════════════════════════════════════
+// HISTOGRAM: Proper even bins, overlaid
+// ══════════════════════════════════════════
+function buildHist(vals, binW, lo, hi) {
+  const counts = [];
+  const labels = [];
+  for (let b = lo; b < hi; b += binW) {
+    labels.push(`${b}-${b+binW-1}`);
+    counts.push(vals.filter(v => v >= b && v < b+binW).length);
+  }
+  // normalize to %
+  const n = vals.length;
+  return { labels, pcts: counts.map(c => +(c/n*100).toFixed(1)) };
+}
+
+function histChart(id, d1, l1, c1, d2, l2, c2) {
+  const BW = 15, LO = 0, HI = 210;
+  const h1 = buildHist(d1, BW, LO, HI);
+  const h2 = buildHist(d2, BW, LO, HI);
+
+  new Chart(document.getElementById(id), {
+    type: 'bar',
+    data: {
+      labels: h1.labels,
+      datasets: [
+        { label:l1, data:h1.pcts, backgroundColor:c1+'cc', borderColor:c1, borderWidth:1, borderRadius:2, barPercentage:.88, categoryPercentage:.82, order:2 },
+        { label:l2, data:h2.pcts, backgroundColor:c2+'99', borderColor:c2, borderWidth:1, borderRadius:2, barPercentage:.88, categoryPercentage:.82, order:1 }
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:true, aspectRatio:2.4,
+      plugins: {
+        legend:{ position:'top', align:'end', labels:{ boxWidth:14, boxHeight:8, padding:14, font:{size:10}, usePointStyle:false } },
+        tooltip:{ ...tooltipStyle, callbacks:{ label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y}%` } }
+      },
+      scales: {
+        x: { grid:{display:false}, ticks:{font:{size:8.5}, maxRotation:50, autoSkip:false},
+             title:{display:true, text:'Students per school', font:{size:9}, padding:{top:6}} },
+        y: { grid:{color:'#e0dbd2'}, beginAtZero:true,
+             title:{display:true, text:'% of schools', font:{size:9}},
+             ticks:{callback:v=>v+'%', stepSize:5} }
+      }
+    }
+  });
+}
+
+histChart('ch-k', D.nc_charter_k_vals,'NC Charters (n=182)','#2b6cb0', D.guilford_pub_k_vals,'Guilford Public (n=69)','#bab2a5');
+histChart('ch-g1', D.nc_charter_g1_vals,'NC Charters (n=182)','#2b6cb0', D.guilford_pub_g1_vals,'Guilford Public (n=69)','#bab2a5');
+
+// ══════════════════════════════════════════
+// BEESWARM: Labeled dot rows for Guilford charters
+// ══════════════════════════════════════════
+const gNames = ['Guilford Prep','Cornerstone','Gate City','Greensboro Acad.','College Prep','Next Gen Acad.','Phoenix Academy','Revolution','Summerfield','Summit Creek','Experiential','Triad Math & Sci'];
+const gKvals = D.guilford_charter_k_vals;
+const gG1vals = D.guilford_charter_g1_vals;
+
+// Sort by K enrollment and pair with names from the detail data
+const gDetail = D.guilford_charter_detail.filter(s => Object.keys(s.k_years).length > 0);
+const gSorted = gDetail.map(s => {
+  const kv = Object.values(s.k_years);
+  const g1v = Object.values(s.g1_years);
+  return { name: s.name, k: kv[kv.length-1], g1: g1v.length ? g1v[g1v.length-1] : null };
+}).sort((a,b) => a.k - b.k);
+
+function renderBees(containerId, field) {
+  const el = document.getElementById(containerId);
+  const maxVal = 160;
+  let html = '';
+  gSorted.forEach(s => {
+    const val = s[field];
+    if (val == null) return;
+    const pct = (val / maxVal * 100).toFixed(1);
+    html += `<div class="bee-row">
+      <div class="bee-name">${s.name}</div>
+      <div class="bee-track">
+        <div class="bee-dot" style="left:${pct}%" title="${val} students">
+          <span class="bee-val" style="left:50%">${val}</span>
+        </div>
+      </div>
+    </div>`;
+  });
+  html += `<div class="bee-axis"></div>`;
+  html += `<div class="bee-ticks"><span>0</span><span>40</span><span>80</span><span>120</span><span>160</span></div>`;
+  el.innerHTML = html;
+}
+renderBees('bees-k', 'k');
+
+// ══════════════════════════════════════════
+// DLI TABLES
+// ══════════════════════════════════════════
+D.dli_charters.forEach(c => {
+  document.getElementById('t-dli').innerHTML += `<tr>
+    <td class="nm">${c.name}</td><td>${c.county.replace(', NC','')}</td><td>${c.language}</td>
+    <td><span class="tag ${c.type==='Two-Way'?'t-two':'t-one'}">${c.type}</span> ${c.program}</td>
+    <td class="mono">${c.year}</td></tr>`;
+});
+D.dli_guilford.forEach(c => {
+  document.getElementById('t-gdli').innerHTML += `<tr>
+    <td class="nm">${c.name}</td><td>${c.language}</td>
+    <td><span class="tag ${c.type==='Two-Way'?'t-two':'t-one'}">${c.type}</span></td>
+    <td class="mono">${c.year}</td></tr>`;
+});
+
+// ══════════════════════════════════════════
+// SPAGHETTI: All trajectories, Guilford highlighted
+// ══════════════════════════════════════════
+(function() {
+  const allYears = ['2018','2019','2020','2021','2022'];
+  const others = D.new_charter_trajectories.filter(t => !t.is_guilford);
+  const guilford = D.new_charter_trajectories.filter(t => t.is_guilford);
+
+  const datasets = [];
+
+  // Other schools: thin gray
+  others.forEach((t,i) => {
+    const yrs = Object.keys(t.years).sort();
+    datasets.push({
+      label: i===0 ? 'Other NC' : '',
+      data: allYears.map(y => t.years[y] || null),
+      borderColor: '#bab2a5',
+      borderWidth: 1.3,
+      pointRadius: 0,
+      pointHoverRadius: 3,
+      tension: .3,
+      spanGaps: false,
+      order: 2
+    });
+  });
+
+  // Guilford: thick gold with labels
+  guilford.forEach(t => {
+    datasets.push({
+      label: t.name.replace('The Experiential School of Greensboro','Experiential School'),
+      data: allYears.map(y => t.years[y] || null),
+      borderColor: '#b8860b',
+      backgroundColor: '#b8860b20',
+      borderWidth: 3,
+      pointRadius: 4,
+      pointBackgroundColor: '#b8860b',
+      pointBorderColor: '#fff',
+      pointBorderWidth: 2,
+      pointHoverRadius: 6,
+      tension: .3,
+      spanGaps: false,
+      order: 1
+    });
+  });
+
+  new Chart(document.getElementById('ch-traj'), {
+    type: 'line',
+    data: { labels: allYears, datasets },
+    options: {
+      responsive:true, maintainAspectRatio:true, aspectRatio:2.4,
+      interaction:{mode:'nearest',intersect:false},
+      plugins: {
+        legend:{
+          position:'bottom',
+          labels:{
+            filter: item => item.text !== '',
+            boxWidth:14, padding:12, font:{size:9},
+            color: '#5a5349'
+          }
+        },
+        tooltip: tooltipStyle
+      },
+      scales: {
+        x: { grid:{display:false}, ticks:{font:{size:10}} },
+        y: { grid:{color:'#e0dbd2'}, min:0, max:200,
+             title:{display:true, text:'K enrollment', font:{size:9}},
+             ticks:{stepSize:40} }
+      }
+    }
+  });
+})();
+
+// ══════════════════════════════════════════
+// SPARKLINE TABLE for Guilford detail
+// ══════════════════════════════════════════
+function miniSpark(years, color) {
+  const vals = Object.values(years);
+  if (!vals.length) return '<span style="color:var(--text-dim);font-size:.66rem">N/A</span>';
+  const w = 120, h = 28, pad = 3;
+  const mn = Math.min(...vals) - 5, mx = Math.max(...vals) + 5;
+  const pts = vals.map((v,i) => {
+    const x = pad + (i/(Math.max(vals.length-1,1)))*(w-2*pad);
+    const y = h-pad - ((v-mn)/(mx-mn))*(h-2*pad);
+    return [x,y];
+  });
+  const line = pts.map(p=>p.join(',')).join(' ');
+  const dots = pts.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="1.5" fill="${color}"/>`).join('');
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
+    <polyline points="${line}" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    ${dots}</svg>`;
+}
+
+const detailTb = document.getElementById('t-detail');
+let detailHTML = '';
+D.guilford_charter_detail.forEach(s => {
+  const kv = Object.values(s.k_years);
+  const g1v = Object.values(s.g1_years);
+  const latK = kv.length ? kv[kv.length-1] : '—';
+  const latG1 = g1v.length ? g1v[g1v.length-1] : '—';
+  detailHTML += `<tr>
+    <td class="snm">${s.name}</td>
+    <td class="snum">${latK}</td>
+    <td>${miniSpark(s.k_years, '#2b6cb0')}</td>
+    <td class="snum">${latG1}</td>
+    <td>${miniSpark(s.g1_years, '#b8860b')}</td>
+  </tr>`;
+});
+detailTb.innerHTML = detailHTML;
+
+// ══════════════════════════════════════════
+// STRIP PLOT: Every school as a tick + scenario markers
+// ══════════════════════════════════════════
+(function(){
+  const strip = document.getElementById('strip');
+  const scale = document.getElementById('strip-scale');
+  const vals = D.nc_charter_k_vals;
+  const maxV = 210;
+
+  function pctile(arr, target) {
+    let c = 0; for (const v of arr) { if (v <= target) c++; else break; }
+    return Math.round(c/arr.length*100);
+  }
+
+  // Background ticks for every school
+  let html = '';
+  vals.forEach(v => {
+    const left = (v/maxV*100).toFixed(2);
+    html += `<div class="tick" style="left:${left}%"></div>`;
+  });
+
+  // Median line
+  const medLeft = (72/maxV*100).toFixed(2);
+  html += `<div style="position:absolute;bottom:40px;left:${medLeft}%;width:1px;height:12px;background:var(--text-dim);opacity:.6"></div>`;
+  html += `<div style="position:absolute;bottom:28px;left:${medLeft}%;transform:translateX(-50%);font-family:var(--font-mono);font-size:.56rem;color:var(--text-dim)">median 72</div>`;
+
+  // Scenario markers
+  const scenarios = [
+    {val:36, label:'36/grade', sub:'Conservative', color:'#7a7265'},
+    {val:54, label:'54/grade', sub:'Target', color:'#2b6cb0'},
+    {val:80, label:'80/grade', sub:'Stretch', color:'#b8860b'}
+  ];
+
+  scenarios.forEach(sc => {
+    const pct = pctile(vals, sc.val);
+    const left = (sc.val/maxV*100).toFixed(2);
+    html += `<div class="marker" style="left:${left}%">
+      <div class="marker-line" style="background:${sc.color}"></div>
+      <div class="marker-dot" style="background:${sc.color}"></div>
+      <div class="marker-label" style="color:${sc.color}">
+        <span class="marker-pct">P${pct}</span><br>${sc.sub}
+      </div>
+    </div>`;
+  });
+
+  strip.innerHTML = html;
+
+  // Scale
+  for (let v = 0; v <= maxV; v += 30) {
+    scale.innerHTML += `<span>${v}</span>`;
+  }
+})();
+
+// ══════════════════════════════════════════
+// SCROLL REVEAL
+// ══════════════════════════════════════════
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('anim');obs.unobserve(e.target)} });
+},{threshold:.12});
+document.querySelectorAll('.sec,.panel,.stats,.note,.tbl,.spark-tbl').forEach(el => obs.observe(el));
+</script>
+
+</body>
+</html>
